@@ -31,14 +31,17 @@ public class UserService {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        Role lectorRole = roleRepository.findByName("LECTOR")
-                .orElseThrow(() -> new RuntimeException("Rol LECTOR no encontrado"));
+        Role rol = roleRepository.findByName(request.getRole())
+        .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
         User user = new User();
+        user.setName(request.getName());
+        user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(lectorRole);
-        user.setStatus(true);
+        user.setRole(rol);
+        user.setState(true);
+
 
         userRepository.save(user);
     }
@@ -47,7 +50,7 @@ public class UserService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if (!user.getStatus()) {
+        if (!user.getState()) {
             throw new RuntimeException("Usuario bloqueado o multado");
         }
 
