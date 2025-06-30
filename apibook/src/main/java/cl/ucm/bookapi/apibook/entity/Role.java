@@ -4,7 +4,7 @@ package cl.ucm.bookapi.apibook.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "library_rol")
 public class Role {
     
     @Id
