@@ -2,50 +2,48 @@
 package cl.ucm.bookapi.apibook.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime; // Importar para manejar fechas y horas
+import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
-@Table(name = "library_booking") // Confirma que este es el nombre correcto de tu tabla de reservas
+@Table(name = "library_booking")
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") // Nombre de la columna PK en library_booking
+    @Column(name = "id")
     private Long id;
 
-    // Relación ManyToOne con User (un usuario puede tener muchas reservas)
-    @ManyToOne(fetch = FetchType.LAZY) // Lazy loading es bueno para relaciones ManyToOne por defecto
-    @JoinColumn(name = "user_fk", nullable = false) // Nombre de la columna FK en tu BD
-    
-    private User user; // El usuario que realizó la reserva
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_fk", nullable = false)
+    private User user;
 
-    // Relación ManyToOne con CopyBook (una copia puede ser reservada muchas veces)
-    @ManyToOne(fetch = FetchType.LAZY) // Lazy loading
-    @JoinColumn(name = "copybook_fk", nullable = false) // Nombre de la columna FK en tu BD
-    
-    private CopyBook copyBook; // La copia de libro que se reservó
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "copybook_fk", nullable = false)
+    private CopyBook copyBook;
 
-    @Column(name = "date_booking", nullable = false) // Fecha y hora en que se realizó la reserva
+    @Column(name = "date_booking", nullable = false)
     private LocalDateTime dateBooking;
 
-    @Column(name = "date_return") // Fecha y hora de devolución (puede ser nula inicialmente)
+    @Column(name = "date_return")
     private LocalDateTime dateReturn;
 
-    @Column(name = "state", nullable = false) // Estado de la reserva (ej. true = activa, false = devuelta/cancelada)
-    private Boolean state; // Mapea 'bool' de la DB a Boolean
+    @Column(name = "expected_return_date", nullable = false) // <-- ¡Campo nuevo añadido!
+    private LocalDateTime expectedReturnDate;
 
-    // Constructor vacío requerido por JPA
+    @Column(name = "state", nullable = false)
+    private Boolean state;
+
     public Booking() {}
 
-    // Constructor útil para crear nuevas reservas
-    public Booking(User user, CopyBook copyBook, LocalDateTime dateBooking, Boolean state) {
+    // Constructor actualizado para incluir expectedReturnDate
+    public Booking(User user, CopyBook copyBook, LocalDateTime dateBooking, LocalDateTime expectedReturnDate, Boolean state) {
         this.user = user;
         this.copyBook = copyBook;
         this.dateBooking = dateBooking;
+        this.expectedReturnDate = expectedReturnDate; // Asignar el nuevo campo
         this.state = state;
-        // dateReturn se establecerá en la devolución
     }
 
     // --- Getters y Setters para todos los campos ---
@@ -88,6 +86,14 @@ public class Booking {
 
     public void setDateReturn(LocalDateTime dateReturn) {
         this.dateReturn = dateReturn;
+    }
+
+    public LocalDateTime getExpectedReturnDate() { // <-- Getter nuevo
+        return expectedReturnDate;
+    }
+
+    public void setExpectedReturnDate(LocalDateTime expectedReturnDate) { // <-- Setter nuevo
+        this.expectedReturnDate = expectedReturnDate;
     }
 
     public Boolean getState() {
