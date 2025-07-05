@@ -11,7 +11,6 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🔐 genera una clave segura de 256 bits automáticamente
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String email, String role) {
@@ -19,7 +18,7 @@ public class JwtUtil {
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

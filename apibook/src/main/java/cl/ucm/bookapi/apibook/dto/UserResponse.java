@@ -1,4 +1,3 @@
-// cl.ucm.bookapi.apibook.dto.UserResponse.java
 package cl.ucm.bookapi.apibook.dto;
 
 public class UserResponse {
@@ -6,13 +5,12 @@ public class UserResponse {
     private String name;
     private String lastName;
     private String email;
-    private Boolean state; // Estado del usuario (activo/bloqueado/multado)
-    private String roleName; // Nombre del rol (ej. "LECTOR", "ADMIN")
+    private Boolean state;
+    private String roleName;
 
-    // Constructor vacío (necesario para la deserialización en algunos casos, aunque aquí mapeamos a él)
+
     public UserResponse() {}
 
-    // Constructor con todos los campos (útil para el mapeo desde la entidad User)
     public UserResponse(Long id, String name, String lastName, String email, Boolean state, String roleName) {
         this.id = id;
         this.name = name;
@@ -22,7 +20,6 @@ public class UserResponse {
         this.roleName = roleName;
     }
 
-    // --- Getters y Setters ---
     public Long getId() {
         return id;
     }

@@ -12,7 +12,7 @@ public class Role {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name; // Ej: "ADMIN", "LECTOR"
+    private String name;
 
     public Role() {}
 

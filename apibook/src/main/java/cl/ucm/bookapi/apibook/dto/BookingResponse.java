@@ -1,20 +1,17 @@
-// cl.ucm.bookapi.apibook.dto.BookingResponse.java
 package cl.ucm.bookapi.apibook.dto;
 
 import java.time.LocalDateTime;
 
 public class BookingResponse {
-    private Long id; // ID de la reserva
-    private LocalDateTime dateBooking; // Fecha y hora de la reserva
-    private LocalDateTime dateReturn; // Fecha y hora de la devolución (puede ser null)
-    private Boolean state; // Estado de la reserva (activo/devuelto)
-    private Long userId; // ID del usuario que realizó la reserva
-    private BookingCopyBookDTO copyBook; // Detalles de la copia del libro y el libro asociado
+    private Long id;
+    private LocalDateTime dateBooking;
+    private LocalDateTime dateReturn;
+    private Boolean state;
+    private Long userId;
+    private BookingCopyBookDTO copyBook;
 
-    // Constructor vacío (necesario para la deserialización)
     public BookingResponse() {}
 
-    // Constructor con todos los campos (útil para el mapeo desde la entidad)
     public BookingResponse(Long id, LocalDateTime dateBooking, LocalDateTime dateReturn, Boolean state, Long userId, BookingCopyBookDTO copyBook) {
         this.id = id;
         this.dateBooking = dateBooking;
@@ -24,7 +21,6 @@ public class BookingResponse {
         this.copyBook = copyBook;
     }
 
-    // --- Getters y Setters ---
 
     public Long getId() {
         return id;

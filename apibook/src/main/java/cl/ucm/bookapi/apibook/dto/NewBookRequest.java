@@ -4,9 +4,9 @@ public class NewBookRequest {
     private String title;
     private String author;
     private String type;
-    private String image64; // <-- ¡Asegúrate que sea SOLO String, no String[] ni byte[]!
+    private String image64;
 
-    // Getters y setters
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

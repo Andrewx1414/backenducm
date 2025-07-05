@@ -6,9 +6,8 @@ public class RegisterRequest {
     private String lastName;
     private String email;
     private String password;
-    //private String role;
 
-    // Getters
+ 
     public String getName() {
         return name;
     }
@@ -25,11 +24,6 @@ public class RegisterRequest {
         return password;
     }
 
-    //public String getRole() {
-     //   return role;
-    //}
-
-    // Setters
     public void setName(String name) {
         this.name = name;
     }
@@ -46,7 +40,4 @@ public class RegisterRequest {
         this.password = password;
     }
 
-   // public void setRole(String role) {
-     //   this.role = role;
-    //}
 }

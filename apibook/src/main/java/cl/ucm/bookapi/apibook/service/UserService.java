@@ -1,8 +1,7 @@
-// cl.ucm.bookapi.apibook.service.UserService.java
 package cl.ucm.bookapi.apibook.service;
 
 import cl.ucm.bookapi.apibook.dto.LoginRequest;
-import cl.ucm.bookapi.apibook.dto.RegisterRequest; // Mantener si RegisterDto es solo un alias o si aún se usa en otro lado
+import cl.ucm.bookapi.apibook.dto.RegisterRequest;
 import cl.ucm.bookapi.apibook.dto.UserResponse;
 import cl.ucm.bookapi.apibook.entity.Role;
 import cl.ucm.bookapi.apibook.entity.User;
@@ -13,7 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // <-- ¡Nueva importación!
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -32,22 +31,16 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Asumiré que RegisterDto es lo mismo que RegisterRequest por ahora.
-    // Si RegisterDto es una clase nueva, deberías crearla como hicimos con UpdateUserStateRequest.
-    // Si es solo un renombramiento, puedes usar RegisterRequest en el parámetro del método.
-    // Para este ejemplo, lo dejaremos como RegisterRequest para que compile directamente con lo que ya tienes.
-    // Si quieres que se llame RegisterDto, dime y creamos esa clase.
-    @Transactional // <-- ¡Añadida!
-    public Optional<UserResponse> createUser(RegisterRequest request) { // <-- Cambiado el retorno a Optional<UserResponse>
+
+    @Transactional
+    public Optional<UserResponse> createUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            // Ya no lanzamos excepción, devolvemos Optional.empty()
-            return Optional.empty(); // Indicamos que el registro falló por email duplicado
+            return Optional.empty();
         }
 
         Optional<Role> roleOptional = roleRepository.findByName("LECTOR");
         if (roleOptional.isEmpty()) {
-            // Ya no lanzamos excepción, devolvemos Optional.empty()
-            return Optional.empty(); // Indicamos que el registro falló por rol no encontrado
+            return Optional.empty();
         }
         Role rol = roleOptional.get();
 
@@ -57,11 +50,10 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(rol);
-        user.setState(true); // Asume que un nuevo usuario está activo
+        user.setState(true);
 
         User savedUser = userRepository.save(user);
 
-        // Mapear el usuario guardado a UserResponse y devolverlo en un Optional
         return Optional.of(new UserResponse(
                 savedUser.getId(),
                 savedUser.getName(),

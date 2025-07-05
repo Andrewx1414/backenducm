@@ -15,12 +15,9 @@ public class Book {
     private String title;
     private String type;
 
-    // --- ¡ESTE ES EL CAMBIO CLAVE QUE TE FALTA HACER EN BOOK.JAVA! ---
-    @Lob // Sigue siendo útil para mapear a TEXT y decirle a Hibernate que puede ser un CLOB grande
+    @Lob
     @Column(name = "image64")
-    private String image64; // <-- ¡ASEGÚRATE DE QUE ESTO SEA 'String', NO 'String[]'!
-
-    // Getters y setters (estos ya deberían estar correctos si los cambiaste a String)
+    private String image64;
 
     public Long getIdBook() {
         return idBook;
@@ -54,7 +51,6 @@ public class Book {
         this.type = type;
     }
 
-    // Asegúrate de que estos getters y setters manejen un String simple
     public String getImage64() {
         return image64;
     }

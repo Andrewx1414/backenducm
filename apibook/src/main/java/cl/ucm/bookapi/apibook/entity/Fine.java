@@ -1,4 +1,3 @@
-// cl.ucm.bookapi.apibook.entity.Fine.java
 package cl.ucm.bookapi.apibook.entity;
 
 import jakarta.persistence.*;
@@ -6,47 +5,44 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "library_fine") // Confirma que este es el nombre correcto de tu tabla de multas
+@Table(name = "library_fine")
 public class Fine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") // ¡Importante! Mapea a la columna 'id' que es tu PK en la DB 
-    private Long id; // Cambiar nombre del campo a 'id' para claridad si prefieres, o mantener idFine
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_fk", nullable = false) // Columna user_fk es NOT NULL 
-    private User user; // Apunta a library_user.id 
+    @JoinColumn(name = "user_fk", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "booking_fk") // Columna booking_fk puede ser NULL 
-    private Booking booking; // ¡Necesitas una entidad Booking! Apunta a library_booking.id 
+    @JoinColumn(name = "booking_fk")
+    private Booking booking;
 
-    @Column(name = "amount", nullable = false) // Tipo numeric(10,2) y NOT NULL 
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "description") // Tipo text y puede ser NULL 
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "fine_date", nullable = false) // Tipo timestamp y NOT NULL 
+    @Column(name = "fine_date", nullable = false)
     private LocalDateTime fineDate;
 
-    @Column(name = "state", nullable = false) // Tipo varchar(50) y NOT NULL 
-    private String state; // Importante: Usar String porque la DB lo tiene como varchar
+    @Column(name = "state", nullable = false)
+    private String state;
 
-    // Constructor vacío
     public Fine() {
-        this.fineDate = LocalDateTime.now(); // Por defecto, la fecha actual
-        this.state = "PENDIENTE"; // Valor por defecto si es String, ej: "PENDIENTE" o "PAGADA"
+        this.fineDate = LocalDateTime.now();
+        this.state = "PENDIENTE";
     }
 
-    // --- Getters y Setters ---
-
-    public Long getId() { // Cambiar a getId() si el campo es 'id'
+    public Long getId() { 
         return id;
     }
 
-    public void setId(Long id) { // Cambiar a setId() si el campo es 'id'
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,11 +86,11 @@ public class Fine {
         this.fineDate = fineDate;
     }
 
-    public String getState() { // Getter para String
+    public String getState() {
         return state;
     }
 
-    public void setState(String state) { // Setter para String
+    public void setState(String state) {
         this.state = state;
     }
 }

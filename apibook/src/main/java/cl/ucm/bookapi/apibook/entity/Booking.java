@@ -1,4 +1,3 @@
-// cl.ucm.bookapi.apibook.entity.Booking.java
 package cl.ucm.bookapi.apibook.entity;
 
 import jakarta.persistence.*;
@@ -29,7 +28,7 @@ public class Booking {
     @Column(name = "date_return")
     private LocalDateTime dateReturn;
 
-    @Column(name = "expected_return_date", nullable = false) // <-- ¡Campo nuevo añadido!
+    @Column(name = "expected_return_date", nullable = false)
     private LocalDateTime expectedReturnDate;
 
     @Column(name = "state", nullable = false)
@@ -37,16 +36,14 @@ public class Booking {
 
     public Booking() {}
 
-    // Constructor actualizado para incluir expectedReturnDate
     public Booking(User user, CopyBook copyBook, LocalDateTime dateBooking, LocalDateTime expectedReturnDate, Boolean state) {
         this.user = user;
         this.copyBook = copyBook;
         this.dateBooking = dateBooking;
-        this.expectedReturnDate = expectedReturnDate; // Asignar el nuevo campo
+        this.expectedReturnDate = expectedReturnDate;
         this.state = state;
     }
 
-    // --- Getters y Setters para todos los campos ---
 
     public Long getId() {
         return id;
@@ -88,11 +85,11 @@ public class Booking {
         this.dateReturn = dateReturn;
     }
 
-    public LocalDateTime getExpectedReturnDate() { // <-- Getter nuevo
+    public LocalDateTime getExpectedReturnDate() {
         return expectedReturnDate;
     }
 
-    public void setExpectedReturnDate(LocalDateTime expectedReturnDate) { // <-- Setter nuevo
+    public void setExpectedReturnDate(LocalDateTime expectedReturnDate) {
         this.expectedReturnDate = expectedReturnDate;
     }
 

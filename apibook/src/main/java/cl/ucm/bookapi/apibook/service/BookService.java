@@ -14,22 +14,18 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
     
-    // Método para obtener todos los libros
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    // Método para obtener libros por tipo
     public List<Book> getBooksByType(String type) {
         return bookRepository.findByType(type); 
     }
 
-    // Nuevo método para buscar libros por título (que contenga el texto e ignore mayúsculas/minúsculas)
     public List<Book> getBooksByTitle(String title) {
         return bookRepository.findByTitleContainingIgnoreCase(title);
     }
 
-    // Método para crear un nuevo libro
     public void createBook(NewBookRequest request) {
         Book book = new Book();
         book.setTitle(request.getTitle());

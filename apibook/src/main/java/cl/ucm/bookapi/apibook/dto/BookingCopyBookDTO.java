@@ -1,16 +1,14 @@
-// cl.ucm.bookapi.apibook.dto.BookingCopyBookDTO.java
 package cl.ucm.bookapi.apibook.dto;
 
 public class BookingCopyBookDTO {
-    private Long idCopyBook; // ID de la copia del libro
-    private String bookTitle; // Título del libro asociado a la copia
-    private String bookAuthor; // Autor del libro asociado a la copia
-    private String bookType; // Tipo del libro asociado a la copia
+    private Long idCopyBook;
+    private String bookTitle;
+    private String bookAuthor;
+    private String bookType;
 
-    // Constructor vacío
+
     public BookingCopyBookDTO() {}
 
-    // Constructor con todos los campos
     public BookingCopyBookDTO(Long idCopyBook, String bookTitle, String bookAuthor, String bookType) {
         this.idCopyBook = idCopyBook;
         this.bookTitle = bookTitle;
@@ -18,7 +16,6 @@ public class BookingCopyBookDTO {
         this.bookType = bookType;
     }
 
-    // --- Getters y Setters ---
 
     public Long getIdCopyBook() {
         return idCopyBook;
