@@ -30,15 +30,16 @@ public class Fine {
     @Column(name = "fine_date", nullable = false)
     private LocalDateTime fineDate;
 
-    @Column(name = "state", nullable = false)
-    private String state;
+
+    @Column(name = "is_pending", nullable = false) 
+    private Boolean isPending;
 
     public Fine() {
         this.fineDate = LocalDateTime.now();
-        this.state = "PENDIENTE";
+        this.isPending = true; 
     }
 
-    public Long getId() { 
+    public Long getId() {
         return id;
     }
 
@@ -86,11 +87,11 @@ public class Fine {
         this.fineDate = fineDate;
     }
 
-    public String getState() {
-        return state;
+    public Boolean getIsPending() {
+        return isPending;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setIsPending(Boolean isPending) {
+        this.isPending = isPending;
     }
 }

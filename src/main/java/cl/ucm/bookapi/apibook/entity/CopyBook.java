@@ -15,17 +15,13 @@ public class CopyBook {
     @JoinColumn(name = "book_fk", nullable = false)
     private Book book;
 
-    @Column(name = "unique_code", unique = true, nullable = false)
-    private String uniqueCode;
-
     @Column(name = "state")
     private Boolean state;
 
     public CopyBook() {}
 
-    public CopyBook(Book book, String uniqueCode) {
+    public CopyBook(Book book) {
         this.book = book;
-        this.uniqueCode = uniqueCode;
         this.state = true;
     }
 
@@ -43,14 +39,6 @@ public class CopyBook {
 
     public void setBook(Book book) {
         this.book = book;
-    }
-
-    public String getUniqueCode() {
-        return uniqueCode;
-    }
-
-    public void setUniqueCode(String uniqueCode) {
-        this.uniqueCode = uniqueCode;
     }
 
     public Boolean getState() {

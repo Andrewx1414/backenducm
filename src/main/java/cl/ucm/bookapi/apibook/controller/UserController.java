@@ -14,23 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reader")
-public class UserController {
-
+public class UserController { 
     @Autowired
     private UserService userService;
 
-    
-     // Endpoint publico para buscar la información de un usuario (lector) por su email.
-
+    // Endpoint para buscar la información de un usuario (lector) por su email.
     @GetMapping("/find/{email}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'LECTOR')") 
-    public ResponseEntity<?> findReaderByEmail(@PathVariable String email) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTOR')")
+    public ResponseEntity<?> findReaderByEmail(@PathVariable("email") String email) { 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String authenticatedUserEmail = authentication.getName();
 
         // Un LECTOR solo puede buscar su propio email. Un ADMIN puede buscar cualquier email.
         boolean isLector = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equalsIgnoreCase("LECTOR") || a.getAuthority().equalsIgnoreCase("ROLE_LECTOR"));
+
+                .anyMatch(a -> a.getAuthority().equalsIgnoreCase("ROLE_LECTOR")); 
 
         if (isLector) {
             if (!authenticatedUserEmail.equalsIgnoreCase(email)) {
@@ -48,13 +46,11 @@ public class UserController {
         }
     }
 
-    
-     //Endpoint para cambiar el estado (activo/inactivo) de un usuario.
-
+    // Endpoint para cambiar el estado (activo/inactivo) de un usuario.
     @PostMapping("/state/{email}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateReaderState(
-            @PathVariable String email,
+            @PathVariable("email") String email,
             @RequestBody UpdateUserStateRequest request) {
 
         if (request.getNewState() == null) {

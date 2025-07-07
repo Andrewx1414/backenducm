@@ -3,7 +3,7 @@ package cl.ucm.bookapi.apibook.controller;
 import cl.ucm.bookapi.apibook.dto.NewBookRequest;
 import cl.ucm.bookapi.apibook.dto.NewCopyBookRequest;
 import cl.ucm.bookapi.apibook.dto.BookingCopyBookDTO;
-import cl.ucm.bookapi.apibook.dto.BookCopyCountDTO; // ¡Añadir este import!
+import cl.ucm.bookapi.apibook.dto.BookCopyCountDTO;
 import cl.ucm.bookapi.apibook.entity.Book;
 import cl.ucm.bookapi.apibook.entity.CopyBook;
 import cl.ucm.bookapi.apibook.service.BookService;
@@ -27,8 +27,6 @@ public class BookController {
     @Autowired
     private CopyBookService copyBookService;
 
-    // ... (Mantén tus endpoints existentes) ...
-
     // Endpoint público para obtener todos los libros
     @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks() {
@@ -36,7 +34,7 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    // Endpoint público para obtener libros por tipo (según tu lista)
+    // Endpoint público para obtener libros por tipo
     @GetMapping("/all/{type}")
     public ResponseEntity<List<Book>> getBooksByType(@PathVariable String type) {
         List<Book> books = bookService.getBooksByType(type);
@@ -48,7 +46,7 @@ public class BookController {
 
     // Endpoint ADMIN: Buscar libro por título
     @GetMapping("/find/{title}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<Book>> getBooksByTitle(@PathVariable String title) {
         List<Book> books = bookService.getBooksByTitle(title);
         if (books.isEmpty()) {
@@ -59,7 +57,7 @@ public class BookController {
 
     // Endpoint ADMIN: Crear nuevo libro
     @PostMapping("/new")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> createBook(@RequestBody NewBookRequest request) {
         bookService.createBook(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("Libro creado correctamente");
@@ -67,11 +65,11 @@ public class BookController {
 
     // Endpoint ADMIN: Crear nueva copia de un libro
     @PostMapping("/newcopy")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> createNewCopyBook(@RequestBody NewCopyBookRequest request) {
         try {
             CopyBook newCopy = copyBookService.createCopyBook(request.getBookId());
-            return ResponseEntity.status(HttpStatus.CREATED).body("📚 Nueva copia de libro creada con ID: " + newCopy.getIdCopyBook());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Nueva copia de libro creada con ID: " + newCopy.getIdCopyBook());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
@@ -79,21 +77,22 @@ public class BookController {
         }
     }
 
-    //ENDPOINT ADMIN: Buscar copias disponibles de un libro por título
+    // ENDPOINT ADMIN: Buscar copias disponibles de un libro por título
     @GetMapping("/copy/{title}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<CopyBook>> getAvailableCopiesByBookTitle(@PathVariable String title) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<CopyBook>> getAvailableCopiesByBookTitle(@PathVariable("title") String title) {
         List<CopyBook> availableCopies = copyBookService.findAvailableCopiesByBookTitle(title);
 
         if (availableCopies.isEmpty()) {
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(availableCopies, HttpStatus.OK);
     }
 
-    // Endpoint existente: Obtener todas las copias de libros con detalles de sus libros
+    // Endpoint ADMIN: Obtener todas las copias de libros con detalles de sus libros
     @GetMapping("/copies/details")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<BookingCopyBookDTO>> getAllCopiesWithDetails() {
         List<BookingCopyBookDTO> copiesWithDetails = copyBookService.getAllCopiesWithBookDetails();
         if (copiesWithDetails.isEmpty()) {
@@ -102,12 +101,12 @@ public class BookController {
         return new ResponseEntity<>(copiesWithDetails, HttpStatus.OK);
     }
 
-    // NUEVO ENDPOINT: Obtener el número de copias por cada libro
+    //ENDPOINT PUBLICO: Obtener el número de copias por cada libro
     @GetMapping("/copies/count")
     public ResponseEntity<List<BookCopyCountDTO>> getCopyCountsPerBook() {
         List<BookCopyCountDTO> copyCounts = copyBookService.getBookCopyCounts();
         if (copyCounts.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content si no hay copias
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(copyCounts, HttpStatus.OK);
     }

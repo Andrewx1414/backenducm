@@ -20,8 +20,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    
-     //Endpoint para crear una nueva reserva de libro.
+    //Endpoint para crear una nueva reserva de libro.
     @PostMapping("/new")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest request) {
@@ -37,12 +36,10 @@ public class BookingController {
         }
     }
 
-    
-     //Endpoint para buscar reservas (préstamos) por el email del usuario.
-     
+    //Endpoint para buscar reservas (préstamos) por el email del usuario.
     @GetMapping("/find/{email}")
     @PreAuthorize("hasAnyRole('ADMIN', 'LECTOR')")
-    public ResponseEntity<List<BookingResponse>> getBookingsByEmail(@PathVariable String email) {
+    public ResponseEntity<List<BookingResponse>> getBookingsByEmail(@PathVariable("email") String email) { 
         List<BookingResponse> bookings = bookingService.getBookingsByUserEmail(email);
 
         if (bookings.isEmpty()) {
@@ -51,11 +48,10 @@ public class BookingController {
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
-     //Endpoint para procesar la devolución de un libro.
-
+    //Endpoint para la devolución de un libro.
     @PostMapping("/return/{idBooking}")
-    @PreAuthorize("hasRole('ADMIN')") // Solo los ADMINs pueden procesar devoluciones
-    public ResponseEntity<?> returnBook(@PathVariable Long idBooking) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> returnBook(@PathVariable("idBooking") Long idBooking) {
         try {
             Booking returnedBooking = bookingService.returnBook(idBooking);
             return ResponseEntity.ok("Libro de la reserva ID " + returnedBooking.getId() + " devuelto correctamente. Copia del libro ID " + returnedBooking.getCopyBook().getIdCopyBook() + " disponible nuevamente.");

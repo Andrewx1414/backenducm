@@ -17,14 +17,13 @@ public class FineController {
     @Autowired
     private FineService fineService;
 
-    // ENDPOINT ADMIN PARA BUSCAR MULTAS POR EMAIL
-
+    // ENDPOINT ADMIN/LECTOR PARA BUSCAR MULTAS POR EMAIL
     @GetMapping("/searchByEmail")
-    @PreAuthorize("hasRole('ADMIN','LECTOR')")
-    public ResponseEntity<List<Fine>> getFinesByEmail(@RequestParam String email) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'LECTOR')")
+    public ResponseEntity<List<Fine>> getFinesByEmail(@RequestParam("email") String email) {
         List<Fine> fines = fineService.getFinesByUserEmail(email);
         if (fines.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(fines);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(fines, HttpStatus.OK);
     }

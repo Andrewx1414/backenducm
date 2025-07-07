@@ -13,8 +13,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByUserEmail(String email);
     List<Booking> findByUserEmailAndState(String email, Boolean state);
 
-    
-    // Busca todas las reservas asociadas a un usuario dado su email,
+
     @Query("SELECT b FROM Booking b " +
            "JOIN FETCH b.user u " +
            "JOIN FETCH b.copyBook cb " +

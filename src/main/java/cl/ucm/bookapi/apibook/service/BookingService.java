@@ -36,8 +36,6 @@ public class BookingService {
     @Autowired
     private FineRepository fineRepository; 
 
-    
-     //Crea una nueva reserva para un usuario y una copia de libro específica.
     @Transactional
     public Booking createBooking(BookingRequest request) {
         User user = userRepository.findById(request.getUserId())
@@ -69,7 +67,6 @@ public class BookingService {
         return savedBooking;
     }
 
-    
     //Busca todas las reservas asociadas a un usuario dado su email
     public List<BookingResponse> getBookingsByUserEmail(String email) {
         List<Booking> bookings = bookingRepository.findBookingsWithDetailsByUserEmail(email);
@@ -97,9 +94,6 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    
-     //Procesa la devolución de una reserva de libro, aplicando multas si la devolucion es tardía
-
     @Transactional
     public Booking returnBook(Long idBooking) {
         Booking booking = bookingRepository.findById(idBooking)
@@ -121,9 +115,9 @@ public class BookingService {
             fine.setUser(user);
             fine.setBooking(booking);
             fine.setAmount(fineAmount);
-            fine.setDescription("Multa por devolución tardía de: " + booking.getCopyBook().getBook().getTitle() + " (Copia: " + booking.getCopyBook().getUniqueCode() + "). Días de retraso: " + daysLate);
+            fine.setDescription("Multa por devolución tardía de: " + booking.getCopyBook().getBook().getTitle() + ". Días de retraso: " + daysLate); // <--- LÍNEA CORREGIDA
             fine.setFineDate(LocalDateTime.now());
-            fine.setState("PENDIENTE");
+            fine.setIsPending(true);
             fineRepository.save(fine);
 
             if (user.getState() != null && user.getState()) {
@@ -135,7 +129,7 @@ public class BookingService {
         Booking updatedBooking = bookingRepository.save(booking);
         CopyBook copyBook = updatedBooking.getCopyBook();
         if (copyBook == null) {
-            throw new IllegalStateException("La reserva no tiene una copia de libro asociada, lo cual es inconsistente.");
+            throw new IllegalStateException("La reserva no tiene una copia de libro asociada.");
         }
 
         copyBook.setState(true);
