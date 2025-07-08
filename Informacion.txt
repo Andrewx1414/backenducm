@@ -1,0 +1,2 @@
+Integrantes: André Flores, Javier Montre
+Link repositorio GitHub Backend: https://github.com/Andrewx1414/BackendDesarrolloweb
